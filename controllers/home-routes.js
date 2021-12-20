@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
       const posts = dbPostData.map(post => post.get({ plain: true }));
 
       res.render('homepage', { posts });
-      res.render('search', { posts });
+      
     })
     .catch(err => {
       console.log(err);
@@ -40,29 +40,61 @@ router.get('/', (req, res) => {
     });
 });
 
-/*router.get('/login', (req, res) => {
+router.get('/dashboard', (req, res) => {
+  console.log('======================');
+  Post.findAll({
+    attributes: [
+      'id',
+      'post_url',
+      'title',
+      'created_at',
+      
+    ],
+    include: [
+      {
+        model: Comment,
+        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+        include: {
+          model: User,
+          attributes: ['username']
+        }
+      },
+      {
+        model: User,
+        attributes: ['username']
+      }
+    ]
+  })
+    .then(dbPostData => {
+      const posts = dbPostData.map(post => post.get({ plain: true }));
+
+      if (req.session.loggedIn) {
+        res.render('dashboard', { posts });
+      } else res.render('login')
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
+
+
+router.get('/login', (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect('/');
+    res.redirect('/dashboard');
     return;
   }
 
   res.render('login');
 });
 
-router.get('/search', (req, res) => {
+router.get('/signup', (req, res) => {
   if (req.session.loggedIn) {
-  
-  res.render('search');
-  } else res.render('login')
-});
+    res.redirect('/dashboard');
+    return;
+  }
 
-*/
-
-router.get('/login', (req, res) => {
-  if (req.session.loggedIn) {
-    res.render('search');
-  } else res.render('login')
-  
+  res.render('signup');
 });
 
 module.exports = router;
