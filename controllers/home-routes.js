@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/new-post', (req, res) => {
-  if (req.session.loggedIn) {
+  if (!req.session.loggedIn) {
     res.redirect('/login');
     return;
   }
