@@ -46,11 +46,11 @@ router.get('/', (req, res) => {
 
 router.get('/new-post', (req, res) => {
   if (req.session.loggedIn) {
-    res.redirect('/new-post');
+    res.redirect('/login');
     return;
   }
 
-  res.render('login');
+  res.render('new-post');
 });
 
 
