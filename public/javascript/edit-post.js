@@ -9,7 +9,7 @@ async function editFormHandler(event) {
     window.location.toString().split('/').length - 1
   ];
 
-  if (post_title) {
+  if (postTitle) {
     const response = await fetch(`/api/posts/${postId}`, {
       method: 'PUT',
       body: JSON.stringify({
