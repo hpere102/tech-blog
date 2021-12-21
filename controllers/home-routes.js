@@ -44,7 +44,14 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/new-post', (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect('/new-post');
+    return;
+  }
 
+  res.render('login');
+});
 
 
 router.get('/login', (req, res) => {
@@ -64,6 +71,8 @@ router.get('/signup', (req, res) => {
 
   res.render('signup');
 });
+
+
 
 
 router.get('/post/:id', (req, res) => {
